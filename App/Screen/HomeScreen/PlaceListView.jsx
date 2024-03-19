@@ -8,8 +8,9 @@ export default function PlaceListView({ placeList }) {
         <View>
             <FlatList
                 data={placeList}
+                pagingEnabled
                 horizontal={true}
-                showsHorizontalScrollIndicator={true}
+                showsHorizontalScrollIndicator={false}
                 renderItem={({ item, index }) => (
                     <View key={index}>
                         <PlaceItem place={item} />

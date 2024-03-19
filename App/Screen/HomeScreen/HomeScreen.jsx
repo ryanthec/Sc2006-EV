@@ -46,7 +46,7 @@ export default function HomeScreen() {
         {/* <Header /> */}
         <SearchBar searchedLocation={(location) => console.log(location)} />
       </View>
-      <AppMapView />
+      <AppMapView placeList={placeList} />
       <View style={styles.placeListContainer}>
         {placeList && <PlaceListView placeList={placeList} />}
       </View>

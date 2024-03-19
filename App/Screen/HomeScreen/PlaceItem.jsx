@@ -14,20 +14,19 @@ export default function PlaceItem({ place }) {
                 width: Dimensions.get('screen').width * 0.9,
                 paddingBottom: 10
             }}>
-            <Image
+            {/* <Image
                 source={
                     place && place.photos && place.photos.length > 0
                         ? {
                             uri: `${PLACE_PHOTO_BASE_URL}${place.photos[0]?.name}/media?key=${GlobalApi.API_KEY}&maxHeightPx=800&maxWidthPx=1200`
                         }
                         : require('./../../../assets/images/login-bg.png')
-                }
-                style={{
-                    width: '100%', borderRadius: 10,
-                    height: 130
-                }}
-            />
-            {/* HELPPPPPPPP IDK why fonts cant work */}
+                } */}
+            {/* style={{
+                width: '100%', borderRadius: 10,
+                height: 130
+            }}
+            /> */}
             <View style={{ padding: 15 }}>
                 <Text style={{
                     fontSize: 20,
