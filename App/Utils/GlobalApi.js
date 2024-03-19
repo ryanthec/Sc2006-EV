@@ -1,14 +1,14 @@
 import axios from "axios";
 
 const BASE_URL = "https://places.googleapis.com/v1/places:searchNearby";
-const BASE_URL_DISTANCE_MATRIX = "https://maps.googleapis.com/maps/api/distancematrix/json";
-const API_KEY = "AIzaSyAbduTPol6xy5Bm8FBw4d7lyHrmRpq0pzg";
+const API_KEY = "AIzaSyDCcI9PY0s1yv_KsRJxFlKqLuZIwVjD14A";
 
 //For the Google Map API calls 
-const config = {
-    headers: {
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': "AIzaSyAbduTPol6xy5Bm8FBw4d7lyHrmRpq0pzg",
+const config= {
+    headers:{
+        'Content-Type':'application/json',
+        'X-Goog-Api-Key': "AIzaSyDCcI9PY0s1yv_KsRJxFlKqLuZIwVjD14A",
+
         //get the approriate info from the API 
         'X-Goog-FieldMask': [
             'places.displayName', 'places.formattedAddress',
