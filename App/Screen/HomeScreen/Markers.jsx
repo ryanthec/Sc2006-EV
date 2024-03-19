@@ -5,6 +5,7 @@ import { SelectMarkerContext } from '../../Context/SelectMarkerContext'
 
 export default function Markers({ index, place }) {
 
+    const { selectedMarker, setSelectedMarker } = useContext(SelectMarkerContext);
     return place && (
 
         <Marker
@@ -12,7 +13,19 @@ export default function Markers({ index, place }) {
                 latitude: place.location?.latitude,
                 longitude: place.location?.longitude
             }}
+
+            onPress={() => setSelectedMarker(index)}
         >
+
+            {selectedMarker == index ?
+                <Image source={require('./../../../assets/images/Marker.png')}
+                    style={{ width: 40, height: 50 }}
+                />
+                : <Image source={require('./../../../assets/images/Marker-2.png')}
+                    style={{ width: 35, height: 45 }}
+                />}
+
+
         </Marker>
 
 
