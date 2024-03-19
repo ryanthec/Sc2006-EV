@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import AppMapView from './AppMapView'
 import Header from './Header'
 import { StyleSheet } from 'react-native'
@@ -7,14 +7,16 @@ import SearchBar from './SearchBar'
 import { UserLocationContext } from '../../Context/UserLocationContext'
 import { useContext } from 'react'
 import GlobalApi from '../../Utils/GlobalApi'
+import PlaceListView from './PlaceListView'
 
 export default function HomeScreen() {
 
   const { location, setLocation } = useContext(UserLocationContext);
+  const [placeList, setPlaceList] = useState([]);
 
-  useEffect(()=>{
-    location&&GetNearByPlace();
-  },[location])
+  useEffect(() => {
+    location && GetNearByPlace();
+  }, [location])
 
   const GetNearByPlace = () => {
     const data = {
@@ -31,7 +33,10 @@ export default function HomeScreen() {
       }
     }
     GlobalApi.NewNearByPlace(data).then(resp => {
-      console.log(resp.data);
+      // See full log 
+      console.log(JSON.stringify(resp.data));
+      // get list of all places of Ev charger
+      setPlaceList(resp.data?.places);
     })
   }
 
@@ -41,7 +46,10 @@ export default function HomeScreen() {
         {/* <Header /> */}
         <SearchBar searchedLocation={(location) => console.log(location)} />
       </View>
-      <AppMapView />
+      <AppMapView placeList={placeList} />
+      <View style={styles.placeListContainer}>
+        {placeList && <PlaceListView placeList={placeList} />}
+      </View>
     </View>
   )
 }
@@ -52,5 +60,11 @@ const styles = StyleSheet.create({
     padding: 50,
     width: '100%',
     paddingHorizontal: 20
+  },
+  placeListContainer: {
+    position: 'absolute',
+    bottom: 80,
+    zIndex: 10,
+    width: '100%'
   }
 })
