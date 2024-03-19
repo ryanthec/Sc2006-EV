@@ -1,4 +1,4 @@
-import { View, Text, Image, Dimensions } from 'react-native'
+import { View, Text, Image, Dimensions, StyleSheet } from 'react-native'
 import React from 'react'
 import Colours from '../../Utils/Colours'
 import GlobalApi from '../../Utils/GlobalApi';
@@ -8,7 +8,7 @@ export default function PlaceItem({ place }) {
     return (
         <View
             style={{
-                backgroundColor: Colours.WHITE,
+                backgroundColor: Colours.DARK,
                 margin: 10,
                 borderRadius: 10,
                 width: Dimensions.get('screen').width * 0.9,
@@ -30,27 +30,55 @@ export default function PlaceItem({ place }) {
             <View style={{ padding: 15 }}>
                 <Text style={{
                     fontSize: 20,
-                    fontFamily: 'Inter-Bold'
+                    color: Colours.WHITE,
+                    fontFamily: 'Inter-Bold',
+                    width: '60%', // Set width to 50% of the parent container
+
                 }}>{place.displayName?.text}</Text>
-                <Text style={{
-                    color: Colours.GRAY,
-                    fontFamily: 'Inter-SemiBold'
-                }}>{place?.formattedAddress}</Text>
+                <View style={styles.AddressContainer}>
+                    <Image source={require('./../../../assets/images/assistant_navigation.png')}
+                        style={{ width: 15, height: 15 }} />
+                    <Text style={{
+                        color: Colours.CREAM,
+                        fontFamily: 'Inter-SemiBold',
+                        marginLeft: 8,
+                    }}>{place?.formattedAddress}</Text>
+                </View>
+
                 <View style={{
                     marginTop: 5,
                 }}>
-                    <Text style={{
-                        fonFamily: 'Inter-Bold',
-                        color: Colours.GRAY
-                    }}>Connectors</Text>
+                    <View style={styles.ConnectContainer}>
+                        <Image source={require('./../../../assets/images/Lightning.png')}
+                            style={{ width: 11, height: 15 }}
+                        />
+                        <Text style={{
+                            fonFamily: 'Inter-Bold',
+                            color: Colours.CREAM,
+                            marginLeft: 10,
+                        }}>Connectors</Text>
+                    </View>
                     <Text style={{
                         fontFamily: 'Inter-SemiBold',
                         fontSize: 20,
-                        marginTop: 2
-                    }}>{place.evChargeOptions.connectorCount}</Text>
+                        marginTop: 2,
+                        marginLeft: 22,
+                        color: Colours.CREAM
+                    }}>{place?.evChargeOptions?.connectorCount} Points</Text>
                 </View>
             </View>
 
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    ConnectContainer: {
+        flexDirection: 'row', // Horizontal alignment
+    },
+    AddressContainer: {
+        flexDirection: 'row', // Horizontal alignment
+        marginTop: 10
+    },
+
+});
