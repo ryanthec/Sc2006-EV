@@ -13,11 +13,19 @@ export default function Markers({ index, place }) {
                 latitude: place.location?.latitude,
                 longitude: place.location?.longitude
             }}
+
             onPress={() => setSelectedMarker(index)}
         >
-            <Image source={require('./../../../assets/images/Marker-2.png')}
-                style={{ width: 40, height: 50 }}
-            />
+
+            {selectedMarker == index ?
+                <Image source={require('./../../../assets/images/Marker.png')}
+                    style={{ width: 40, height: 50 }}
+                />
+                : <Image source={require('./../../../assets/images/Marker-2.png')}
+                    style={{ width: 35, height: 45 }}
+                />}
+
+
         </Marker>
 
 
