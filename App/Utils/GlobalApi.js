@@ -13,7 +13,7 @@ const config= {
         'X-Goog-FieldMask': [
             'places.displayName', 'places.formattedAddress',
             'places.location', 'places.evChargeOptions',
-            'places.photos', 'places.id', 'places.parkingOptions', 'places.fuelOptions', 'places.fuelOptions'
+            'places.photos', 'places.id', 'places.parkingOptions'
         ]
     }
 }
