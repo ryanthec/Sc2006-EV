@@ -9,7 +9,14 @@ const config= {
         'Content-Type':'application/json',
         'X-Goog-Api-Key': "AIzaSyDCcI9PY0s1yv_KsRJxFlKqLuZIwVjD14A",
         //get the approriate info from the API 
-        'X-Goog-FieldMask' : 'places.displayName,places.formattedAddress,places.location,places.evChargeOptions,places.photos,places.id' 
+        'X-Goog-FieldMask' : [
+            'places.displayName',
+            'places.formattedAddress',
+            'places.location',
+            'places.evChargeOptions',
+            'places.photos',
+            'places.id',
+            'places.shortFormattedAddress']
     }
 }
 

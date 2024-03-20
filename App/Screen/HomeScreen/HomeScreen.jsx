@@ -7,10 +7,13 @@ import SearchBar from './SearchBar'
 import { UserLocationContext } from '../../Context/UserLocationContext'
 import { useContext } from 'react'
 import GlobalApi from '../../Utils/GlobalApi'
+import { useState } from 'react'
+import PlaceListView from './PlaceListView'
 
 export default function HomeScreen() {
 
   const { location, setLocation } = useContext(UserLocationContext);
+  const [ placeList, setPlaceList ] = useState([]);
 
   useEffect(()=>{
     location&&GetNearByPlace();
@@ -31,7 +34,8 @@ export default function HomeScreen() {
       }
     }
     GlobalApi.NewNearByPlace(data).then(resp => {
-      console.log(resp.data);
+      console.log(JSON.stringify(resp.data));
+      setPlaceList(resp.data?.places);
     })
   }
 
@@ -42,6 +46,9 @@ export default function HomeScreen() {
         <SearchBar searchedLocation={(location) => console.log(location)} />
       </View>
       <AppMapView />
+      <View style={styles.placeListContainer}>
+        {placeList&&<PlaceListView placeList={placeList}/>}
+      </View>
     </View>
   )
 }
@@ -52,5 +59,12 @@ const styles = StyleSheet.create({
     padding: 50,
     width: '100%',
     paddingHorizontal: 20
+  },
+  placeListContainer: {
+    position: "absolute",
+    zIndex: 10,
+    width: '100%',
+    bottom:80,
+    paddingHorizontal:0
   }
 })
