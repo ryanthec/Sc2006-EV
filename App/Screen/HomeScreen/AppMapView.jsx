@@ -5,8 +5,9 @@ import { StyleSheet } from 'react-native'
 import MapViewStyle from '../../Utils/MapViewStyle.json'
 import { UserLocationContext } from '../../Context/UserLocationContext'
 import { Image } from 'react-native'
+import Markers from './Markers'
 
-export default function AppMapView() {
+export default function AppMapView({placeList}) {
     const { location, setLocation } = useContext(UserLocationContext);
     return location?.latitude&&(
         <View>
@@ -19,7 +20,7 @@ export default function AppMapView() {
                     latitudeDelta:0.0422,
                     longitudeDelta:0.0421
                 }}>
-                    <Marker
+                    {location?<Marker
                         coordinate={{
                             latitude:location?.latitude,
                             longitude:location?.longitude
@@ -28,7 +29,11 @@ export default function AppMapView() {
                      <Image source={require('./../../../assets/images/car.png')}
                      style={{width:33.75,height:60}}
                      />
-                    </Marker>
+                    </Marker>:null}
+                    {placeList&&placeList.map((item,index)=>(
+                        <Markers key={index}
+                        index={index}
+                        place={item}/>))}
                 </MapView>
         </View>
     )

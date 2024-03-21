@@ -4,8 +4,28 @@ import PlaceItem from './PlaceItem';
 import { TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import ExpandedPlaceItem from './ExpandedPlaceItem'
+import { Dimensions } from 'react-native';
+import { useEffect } from 'react';
+import { SelectMarkerContext } from '../../Context/SelectMarkerContext';
+import { useContext } from 'react';
 
 export default function PlaceListView({ placeList }) {
+
+    const flatListRef = useRef(null);
+    const {selectedMarker,setSelectedMarker}=useContext(SelectMarkerContext);
+
+    useEffect(() => {
+        selectedMarker&&scrollToIndex(selectedMarker);
+    }, [selectedMarker]);
+
+    const scrollToIndex=(index)=>{
+        flatListRef.current?.scrollToIndex({animated:true,index})
+    }
+    const getItemLayout=(_,index)=>({
+        length:Dimensions.get('window').width,
+        offset:Dimensions.get('window').width*index,
+        index
+    });
 
     const [selectedPlace, setSelectedPlace] = useState(null);
     const [expanded, setExpanded] = useState(false);
@@ -23,6 +43,9 @@ export default function PlaceListView({ placeList }) {
             {!expanded && (<FlatList
                 data={placeList}
                 horizontal={true}
+                pagingEnabled
+                ref={flatListRef}
+                getItemLayout={getItemLayout}
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item, index }) => (
                     <View key={index}>

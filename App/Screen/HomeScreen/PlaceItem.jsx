@@ -13,9 +13,9 @@ export default function PlaceItem({ place, onPress }) {
           padding: 15,
           backgroundColor: Colours.PRIMARY,
           paddingBottom: 130,
-          margin: 5,
+          margin: 19,
           borderRadius: 10,
-          width: Dimensions.get('screen').width * 0.8,
+          width: Dimensions.get('screen').width * 0.9,
         }}>
         <View>
           <Text
