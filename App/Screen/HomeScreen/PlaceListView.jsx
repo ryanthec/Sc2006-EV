@@ -32,6 +32,7 @@ export default function PlaceListView({ placeList }) {
                 ref={FlatListRef}
                 getItemLayout={getItemLayout}
                 showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{flexGrow:1, justifyContent:'center'}}
                 renderItem={({ item, index }) => (
                     <View key={index}>
                         <PlaceItem place={item} />
