@@ -14,7 +14,8 @@
     "@react-navigation/native-stack": "^6.9.26",
     "@types/react": "^18.2.67",
     "axios": "^1.6.8",
-    "expo": "~50.0.13",
+    "expo": "^50.0.13",
+    "expo-blur": "~12.9.2",
     "expo-font": "~11.10.3",
     "expo-location": "~16.5.5",
     "expo-splash-screen": "~0.26.4",
@@ -26,8 +27,7 @@
     "react-native-image-overlay": "^0.1.2",
     "react-native-maps": "^1.11.3",
     "react-native-safe-area-context": "^4.9.0",
-    "react-native-screens": "~3.29.0",
-    "expo-blur": "~12.9.2"
+    "react-native-screens": "~3.29.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
