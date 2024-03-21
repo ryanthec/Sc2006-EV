@@ -18,13 +18,12 @@ export default function Markers({ index, place }) {
         >
 
             {selectedMarker == index ?
-                <Image source={require('./../../../assets/images/Marker.png')}
+                <Image source={require('./../../../assets/images/marker.png')}
                     style={{ width: 40, height: 50 }}
                 />
                 : <Image source={require('./../../../assets/images/Marker-2.png')}
                     style={{ width: 35, height: 45 }}
                 />}
-
 
         </Marker>
 
