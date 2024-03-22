@@ -38,7 +38,6 @@ export default function PlaceItem({ place, onPress }) {
             {place?.shortFormattedAddress}
           </Text>
         </View>
-        
       </View>
       <View style={{height:500}}>
           <DetailsNavigation/>

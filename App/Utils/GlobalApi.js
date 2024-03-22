@@ -16,7 +16,8 @@ const config= {
             'places.evChargeOptions',
             'places.photos',
             'places.id',
-            'places.shortFormattedAddress']
+            'places.shortFormattedAddress',
+            'places.regularOpeningHours']
     }
 }
 
