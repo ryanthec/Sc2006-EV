@@ -4,6 +4,7 @@ import { Image } from 'react-native'
 import Colours from '../../Utils/Colours'
 import { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
+import DetailsNavigation from './LocationDetails/DetailsNavigation'
 
 export default function PlaceItem({ place, onPress }) {
   return (
@@ -12,7 +13,7 @@ export default function PlaceItem({ place, onPress }) {
         style={{
           padding: 15,
           backgroundColor: Colours.PRIMARY,
-          paddingBottom: 500,
+          paddingBottom: 20,
           margin: 0,
           borderRadius: 10,
           width: Dimensions.get('screen').width,
@@ -37,7 +38,12 @@ export default function PlaceItem({ place, onPress }) {
             {place?.shortFormattedAddress}
           </Text>
         </View>
+        
       </View>
+      <View style={{height:500}}>
+          <DetailsNavigation/>
+        </View>
     </TouchableOpacity>
+    
   );
 }
