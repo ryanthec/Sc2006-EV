@@ -1,24 +1,14 @@
-import { View, Text, Dimensions, touchableo, Pressable } from 'react-native'
+import { View, Text, Dimensions, touchableo } from 'react-native'
 import React from 'react'
 import { Image } from 'react-native'
 import Colours from '../../Utils/Colours'
 import { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
+import DetailsNavigation from './LocationDetails/DetailsNavigation'
+import { Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import { getFirestore } from 'firebase/firestore'
-import { app } from '../../../src/firebase/config'
-import { doc, setDoc } from "firebase/firestore"; 
-import { UserContext } from '../../../App'
-import { useContext } from 'react'
 
 export default function PlaceItem({ place, onPress }) {
-
-  const db = getFirestore(app);
-  const onSetFav=async(place)=>{
-    // Add a new document in collection "cities"
-    await setDoc(doc(db, "ev-fav-place", (place.id).toString()), place);
-  }
-
   return (
     <TouchableOpacity onPress={() => onPress(place)}>
       <View
@@ -26,9 +16,9 @@ export default function PlaceItem({ place, onPress }) {
           padding: 15,
           backgroundColor: Colours.PRIMARY,
           paddingBottom: 20,
-          margin: 19,
+          margin: 0,
           borderRadius: 10,
-          width: Dimensions.get('screen').width * 0.9,
+          width: Dimensions.get('screen').width,
         }}>
 
         <View>
@@ -66,10 +56,9 @@ export default function PlaceItem({ place, onPress }) {
             fontFamily: 'Inter-Regular',
             paddingBottom: 2,
           }}>Connectors</Text>
-
         </View>
 
-        <View style={{ paddingLeft: 18, flexDirection: 'row' }}>
+        <View style={{ paddingLeft: 18, paddingBottom:20, flexDirection:'row' }}>
           <Text
             style={{
               color: Colours.WHITE,
@@ -79,13 +68,13 @@ export default function PlaceItem({ place, onPress }) {
             {place?.evChargeOptions?.connectorCount} Points
           </Text>
           <Pressable style={{
-            marginLeft: 120, 
+            marginLeft: 150, 
             backgroundColor: Colours.BLUE, 
             borderRadius: 5, 
             padding: 10,
             paddingHorizontal: 25, 
             flexDirection: 'row'
-          }} onPress={()=>onSetFav(place)}>
+          }}>
             <Ionicons style={{ marginTop: 1, marginRight: 5 }} name="bookmark-outline" size={15} color="white" />
             <Text style={{
               fontSize: 14,
@@ -95,7 +84,13 @@ export default function PlaceItem({ place, onPress }) {
             }}>Save</Text>
           </Pressable>
         </View>
+
+        <View style={{ height: 500 }}>
+          <DetailsNavigation />
+        </View>
+        
       </View>
     </TouchableOpacity>
+
   );
 }
