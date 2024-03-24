@@ -4,5 +4,6 @@ export default{
     WHITE:'#FFFFFF',
     BLACK:'#000000',
     CREAM:'#FAFAF5',
-    DARKCREAM:'#E6E6E6'
+    DARKCREAM:'#E6E6E6',
+    BLUE: '#4170EB'
 }

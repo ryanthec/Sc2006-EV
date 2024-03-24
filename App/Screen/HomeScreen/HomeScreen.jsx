@@ -9,7 +9,7 @@ import PlaceListView from './PlaceListView';
 import { SelectMarkerContext } from '../../Context/SelectMarkerContext';
 
 export default function HomeScreen() {
-  const { location } = useContext(UserLocationContext);
+  const { location, setLocation } = useContext(UserLocationContext);
   const [placeList, setPlaceList] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null); // Assuming selectedMarker is a single marker object
 
@@ -47,7 +47,10 @@ export default function HomeScreen() {
       <View>
         <View style={styles.headerContainer}>
           {/* <Header /> */}
-          <SearchBar searchedLocation={(location) => console.log(location)} />
+          <SearchBar searchedLocation={(location) => setLocation({
+            latitude:location.lat,
+            longitude:location.lng
+          })} />
         </View>
         {placeList.length > 0 && <AppMapView placeList={placeList} />}
         <View style={styles.placeListContainer}>
