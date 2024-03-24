@@ -5,7 +5,9 @@ import MapViewStyle from '../../Utils/MapViewStyle.json'
 import { UserLocationContext } from '../../Context/UserLocationContext'
 import Markers from './Markers'
 
-export default function AppMapView({placeList}) {
+
+export default function AppMapView({ placeList }) {
+
     const { location, setLocation } = useContext(UserLocationContext);
     return location?.latitude && (
         <View>
