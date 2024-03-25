@@ -8,15 +8,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { getFirestore } from 'firebase/firestore'
 import { app } from '../../../src/firebase/config'
 import { doc, setDoc } from "firebase/firestore"; 
-import { UserContext } from '../../../App'
-import { useContext } from 'react'
+import { FIREBASE_AUTH } from '../../../src/firebase/config'
 
 export default function PlaceItem({ place, onPress }) {
 
+  const user = FIREBASE_AUTH.currentUser
   const db = getFirestore(app);
   const onSetFav=async(place)=>{
     // Add a new document in collection "cities"
-    await setDoc(doc(db, "ev-fav-place", (place.id).toString()), place);
+    await setDoc(doc(db, "ev-fav-place", (place.id).toString()), 
+   { place:place,
+    email:user?.email})
   }
 
   return (
