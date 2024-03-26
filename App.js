@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
-import { useCallback , useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import LoginScreen from './App/Screen/LoginScreen/LoginScreen';
 import { User, getAuth, onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './src/firebase/config';
@@ -18,15 +18,18 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   const [user, setUser] = useState(null);
+  const [isVerified, setVerified] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      console.log('user', user);
-      setUser(user);
+      if (user) {
+        console.log('user verified');
+        setVerified(user.emailVerified);
+        setUser(user);
+      }
     });
-
     // Cleanup subscription
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
 
   const [fontsLoaded, fontError] = useFonts({
@@ -39,7 +42,7 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      
+
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -59,9 +62,9 @@ function App() {
   }
 
   return (
-    <UserLocationContext.Provider value={{location,setLocation}}>
+    <UserLocationContext.Provider value={{ location, setLocation }}>
       <NavigationContainer>
-        {user ? (
+        {user && isVerified ? (
           <TabNavigation>
             <TabNavigation.Screen name="Home" component={HomeScreen} />
           </TabNavigation>

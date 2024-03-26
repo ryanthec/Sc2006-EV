@@ -1,28 +1,111 @@
-import { TouchableOpacity, Button, ImageBackground, View, TextInput, Text, Image, StyleSheet, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
-import React, { useState } from 'react'
+import { Alert, TouchableOpacity, Button, ImageBackground, View, TextInput, Text, Image, StyleSheet, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import Colours from './../../Utils/Colours'
 import ImageOverlay from 'react-native-image-overlay'
+import AppMapView from '../HomeScreen/AppMapView'
 import { FIREBASE_AUTH } from '../../../src/firebase/config'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+
     const auth = FIREBASE_AUTH;
+
     const signIn = async () => {
         setLoading(true);
         try {
+            const user = await getAuth().currentUser;
             await signInWithEmailAndPassword(auth, email, password);
+            if (user) {
+                return <AppMapView />;
+            }
         } catch (error) {
             console.log(error);
-            alert('Sign in failed: ' + error.message);
+            alert('Invalid credentials!');
         } finally {
             setLoading(false);
         }
     }
-    const signUp = async () => {
+
+    // checks if input email is valid
+    const validateEmail = (email) => {
+        const emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegEx.test(email);
+    }
+
+    // checks if input password is strong enough 
+    const checkPasswordStrength = (password) => {
+        function containsDigits(password) {
+            return /\d/.test(password);
+        }
+        function containsUppercaseChar(password) {
+            return /[A-Z]/.test(password);
+        }
+        function containsLowercaseChar(password) {
+            return /[a-z]/.test(password);
+        }
+        if (password.length < 8) {
+            showAlert("shortPassword");
+            return false;
+        }
+        else if (!containsDigits(password)) {
+            showAlert("noDigits");
+            return false;
+        }
+        else if (!containsUppercaseChar(password)) {
+            showAlert("noUppercase");
+            return false;
+        }
+        else if (!containsLowercaseChar(password)) {
+            showAlert("noLowercase");
+            return false;
+        }
+        return true;
+    }
+
+    // displays alert depending on the type of password error
+    const showAlert = (type) => {
+        switch (type) {
+            case "shortPassword":
+                return (
+                    Alert.alert(
+                        'Weak Password',
+                        'Password must be minimally 8 characters',
+                    )
+                );
+            case "noDigits":
+                return (
+                    Alert.alert('Weak Password',
+                        'Password must include a number')
+                );
+            case "noUppercase":
+                return (
+                    Alert.alert('Weak Password',
+                        'Password must include uppercase character')
+                );
+            case "noLowercase":
+                return (
+                    Alert.alert('Weak password',
+                        'Password must include lowercase character')
+                );
+            default:
+                break;
+        }
+    }
+
+    const signUp = async (email, password) => {
         setLoading(true);
+        // attempts to validate email
+        if (!validateEmail(email)) {
+            return (Alert.alert('Invalid email', 'Please enter a valid email address'))
+        }
+        // check password strength
+        if (!checkPasswordStrength(password)) {
+            return;
+        }
+
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             await sendEmailVerification(FIREBASE_AUTH.currentUser);
@@ -60,7 +143,7 @@ export default function LoginScreen() {
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.regButton}
-                        onPress={signUp}>
+                        onPress={() => signUp(email, password)}>
                         <Text style={styles.buttonText}>Register</Text>
                     </TouchableOpacity>
                 </View>
