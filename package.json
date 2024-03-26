@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@firebase/firestore": "^4.5.0",
@@ -17,6 +18,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "@types/react": "^18.2.67",
     "axios": "^1.6.8",
+    "deprecated-react-native-prop-types": "^5.0.0",
     "expo": "^50.0.14",
     "expo-blur": "~12.9.2",
     "expo-font": "~11.10.3",
@@ -25,6 +27,7 @@
     "expo-status-bar": "~1.11.1",
     "firebase": "^10.9.0",
     "flatlist-react": "^1.5.14",
+    "patch-package": "^8.0.0",
     "react": "18.2.0",
     "react-native": "0.73.5",
     "react-native-google-places-autocomplete": "^2.5.6",
