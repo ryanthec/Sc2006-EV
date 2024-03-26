@@ -20,10 +20,10 @@ const Stack = createNativeStackNavigator();
 function App() {
   const [user, setUser] = useState(null);
   const [isVerified, setVerified] = useState(false);
-
   //ignore Yellow Log Notifications 
   LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
   LogBox.ignoreAllLogs();//Ignore all log notifications
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
