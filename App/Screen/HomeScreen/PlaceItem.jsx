@@ -4,47 +4,53 @@ import { Image } from 'react-native'
 import Colours from '../../Utils/Colours'
 import { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
-import { Ionicons } from '@expo/vector-icons';
 import { getFirestore } from 'firebase/firestore'
 import { app } from '../../../src/firebase/config'
-import { doc, setDoc, deleteDoc } from "firebase/firestore"; 
+import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import { FIREBASE_AUTH } from '../../../src/firebase/config'
+import { StyleSheet } from 'react-native'
 
 export default function PlaceItem({ place, isFav, onPress, markedFav }) {
 
   const user = FIREBASE_AUTH.currentUser
   const db = getFirestore(app);
-  const onSetFav=async(place)=>{
-    // Add a new document in collection "cities"
-    await setDoc(doc(db, "ev-fav-place", (place.id).toString()), 
-   { place:place,
-    email:user?.email})
+  const onSetFav = async (place) => {
+
+    await setDoc(doc(db, "ev-fav-place", (place.id).toString()),
+      {
+        place: place,
+        email: user?.email
+      })
     markedFav()
   }
-  const onRemoveFav=async(placeId)=>{
+  const onRemoveFav = async (placeId) => {
     await deleteDoc(doc(db, "ev-fav-place", placeId.toString()));
     markedFav()
   }
 
   return (
+    <View>
+
     <TouchableOpacity onPress={() => onPress(place)}>
       <View
         style={{
           padding: 15,
           backgroundColor: Colours.PRIMARY,
-          paddingBottom: 20,
-          margin: 19,
+          margin: 19.5,
           borderRadius: 10,
+          height:200,
           width: Dimensions.get('screen').width * 0.9,
         }}>
 
-        <View>
+
+        <View style={{ flexDirection: 'row' }}>
           <Text
             style={{
               color: Colours.WHITE,
               fontSize: 21,
               fontFamily: 'Inter-Bold',
-              paddingBottom: 10,
+              marginBottom: 10,
+              marginRight: 20
             }}>
             {place.displayName?.text}
           </Text>
@@ -76,7 +82,7 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
 
         </View>
 
-        <View style={{ paddingLeft: 18, flexDirection: 'row' }}>
+        <View style={{ marginLeft: 18 }}>
           <Text
             style={{
               color: Colours.WHITE,
@@ -85,15 +91,8 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
             }}>
             {place?.evChargeOptions?.connectorCount} Points
           </Text>
-          
-          {isFav?<Pressable style={{
-            marginLeft: 120, 
-            backgroundColor: Colours.BLUE, 
-            borderRadius: 5, 
-            padding: 10,
-            paddingHorizontal: 20, 
-            flexDirection: 'row'
-          }} onPress={()=>onRemoveFav(place.id)}>
+
+          {/* {isFav ? <Pressable style={styles.blueButton} onPress={() => onRemoveFav(place.id)}>
             <Ionicons style={{ marginTop: 1, marginRight: 5 }} name="bookmark" size={15} color="white" />
             <Text style={{
               fontSize: 14,
@@ -101,14 +100,7 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
               textAlign: 'center',
               color: Colours.WHITE,
             }}>Saved</Text>
-          </Pressable>:<Pressable style={{
-            marginLeft: 120, 
-            backgroundColor: Colours.BLUE, 
-            borderRadius: 5, 
-            padding: 10,
-            paddingHorizontal: 25, 
-            flexDirection: 'row'
-          }} onPress={()=>onSetFav(place)}>
+          </Pressable> : <Pressable style={styles.blueButton} onPress={() => onSetFav(place)}>
             <Ionicons style={{ marginTop: 1, marginRight: 5 }} name="bookmark-outline" size={15} color="white" />
             <Text style={{
               fontSize: 14,
@@ -116,9 +108,40 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
               textAlign: 'center',
               color: Colours.WHITE,
             }}>Save</Text>
-          </Pressable>}
+          </Pressable>} */}
+
         </View>
       </View>
     </TouchableOpacity>
+
+    <View styles={{}}>
+    {isFav ? <Pressable style={styles.bookmark} onPress={() => onRemoveFav(place.id)}>
+      <Image source={require('./../../../assets/images/bookmarked.png')}
+        style={{ width: 40, height: 40 }} />
+    </Pressable> : <Pressable style={styles.bookmark} onPress={() => onSetFav(place)}>
+      <Image source={require('./../../../assets/images/bookmark.png')}
+        style={{ width: 40, height: 40 }} />
+    </Pressable>}
+  </View>
+
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  blueButton: {
+    backgroundColor: Colours.BLUE,
+    borderRadius: 5,
+    padding: 10,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    position: 'absolute',
+    left: 200,
+    bottom: 4
+  },
+  bookmark: {
+    position:'absolute',
+    bottom:225,
+    marginHorizontal:310,
+  }
+});
