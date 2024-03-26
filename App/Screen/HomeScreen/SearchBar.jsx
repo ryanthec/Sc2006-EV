@@ -1,7 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import GlobalApi from '../../Utils/GlobalApi';
 
 export default function SearchBar({searchedLocation}) {
   return (

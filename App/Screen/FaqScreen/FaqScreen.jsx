@@ -1,8 +1,9 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { ImageBackground } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
-export default function ProfileScreen() {
+export default function FaqScreen() {
   return (
     <View>
       <ImageBackground source={require('./../../../assets/images/login-bg.png')}
@@ -10,7 +11,7 @@ export default function ProfileScreen() {
             justifyContent:'center',
             alignItems:'center',}}
         >
-      <Text>FAQ Placeholders</Text>
+      <Text>FAQ Placeholder</Text>
       </ImageBackground>
     </View>
   )
