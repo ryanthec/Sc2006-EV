@@ -1,31 +1,14 @@
-import { View, Text, Dimensions, touchableo, Pressable } from 'react-native'
+import { View, Text, Dimensions, touchableo } from 'react-native'
 import React from 'react'
 import { Image } from 'react-native'
 import Colours from '../../Utils/Colours'
 import { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
+import DetailsNavigation from './LocationDetails/DetailsNavigation'
+import { Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import { getFirestore } from 'firebase/firestore'
-import { app } from '../../../src/firebase/config'
-import { doc, setDoc, deleteDoc } from "firebase/firestore"; 
-import { FIREBASE_AUTH } from '../../../src/firebase/config'
 
-export default function PlaceItem({ place, isFav, onPress, markedFav }) {
-
-  const user = FIREBASE_AUTH.currentUser
-  const db = getFirestore(app);
-  const onSetFav=async(place)=>{
-    // Add a new document in collection "cities"
-    await setDoc(doc(db, "ev-fav-place", (place.id).toString()), 
-   { place:place,
-    email:user?.email})
-    markedFav()
-  }
-  const onRemoveFav=async(placeId)=>{
-    await deleteDoc(doc(db, "ev-fav-place", placeId.toString()));
-    markedFav()
-  }
-
+export default function PlaceItem({ place, onPress }) {
   return (
     <TouchableOpacity onPress={() => onPress(place)}>
       <View
@@ -33,9 +16,9 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
           padding: 15,
           backgroundColor: Colours.PRIMARY,
           paddingBottom: 20,
-          margin: 19,
+          margin: 0,
           borderRadius: 10,
-          width: Dimensions.get('screen').width * 0.9,
+          width: Dimensions.get('screen').width,
         }}>
 
         <View>
@@ -73,10 +56,9 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
             fontFamily: 'Inter-Regular',
             paddingBottom: 2,
           }}>Connectors</Text>
-
         </View>
 
-        <View style={{ paddingLeft: 18, flexDirection: 'row' }}>
+        <View style={{ paddingLeft: 18, paddingBottom:20, flexDirection:'row' }}>
           <Text
             style={{
               color: Colours.WHITE,
@@ -85,30 +67,14 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
             }}>
             {place?.evChargeOptions?.connectorCount} Points
           </Text>
-          
-          {isFav?<Pressable style={{
-            marginLeft: 120, 
-            backgroundColor: Colours.BLUE, 
-            borderRadius: 5, 
-            padding: 10,
-            paddingHorizontal: 20, 
-            flexDirection: 'row'
-          }} onPress={()=>onRemoveFav(place.id)}>
-            <Ionicons style={{ marginTop: 1, marginRight: 5 }} name="bookmark" size={15} color="white" />
-            <Text style={{
-              fontSize: 14,
-              fontFamily: 'Inter-Bold',
-              textAlign: 'center',
-              color: Colours.WHITE,
-            }}>Saved</Text>
-          </Pressable>:<Pressable style={{
-            marginLeft: 120, 
+          <Pressable style={{
+            marginLeft: 150, 
             backgroundColor: Colours.BLUE, 
             borderRadius: 5, 
             padding: 10,
             paddingHorizontal: 25, 
             flexDirection: 'row'
-          }} onPress={()=>onSetFav(place)}>
+          }}>
             <Ionicons style={{ marginTop: 1, marginRight: 5 }} name="bookmark-outline" size={15} color="white" />
             <Text style={{
               fontSize: 14,
@@ -116,9 +82,15 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
               textAlign: 'center',
               color: Colours.WHITE,
             }}>Save</Text>
-          </Pressable>}
+          </Pressable>
         </View>
+
+        <View style={{ height: 500 }}>
+          <DetailsNavigation />
+        </View>
+        
       </View>
     </TouchableOpacity>
+
   );
 }
