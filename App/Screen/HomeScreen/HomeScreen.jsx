@@ -7,6 +7,7 @@ import Header from './Header';
 import SearchBar from './SearchBar';
 import PlaceListView from './PlaceListView';
 import { SelectMarkerContext } from '../../Context/SelectMarkerContext';
+import ReturnToLocation from './ReturnToLocation';
 
 export default function HomeScreen() {
   const { location, setLocation } = useContext(UserLocationContext);
@@ -46,14 +47,14 @@ export default function HomeScreen() {
     <SelectMarkerContext.Provider value={{ selectedMarker, setSelectedMarker }}>
       <View>
         <View style={styles.headerContainer}>
-          {/* <Header /> */}
           <SearchBar searchedLocation={(location) => setLocation({
-            latitude:location.lat,
-            longitude:location.lng
+            latitude: location.lat,
+            longitude: location.lng
           })} />
         </View>
         {placeList.length > 0 && <AppMapView placeList={placeList} />}
         <View style={styles.placeListContainer}>
+          <ReturnToLocation />
           {placeList.length > 0 && <PlaceListView placeList={placeList} />}
         </View>
       </View>
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 10,
     width: '100%',
-    bottom:80,
+    bottom: 80,
     paddingHorizontal: 0
   }
 });

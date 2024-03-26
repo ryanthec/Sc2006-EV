@@ -1,27 +1,31 @@
-import { View, Text, Dimensions, touchableo, Pressable } from 'react-native'
+import { View, Text, Dimensions, touchableo, Pressable, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Image } from 'react-native'
 import Colours from '../../Utils/Colours'
 import { useState } from 'react'
-import { TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { getFirestore } from 'firebase/firestore'
 import { app } from '../../../src/firebase/config'
-import { doc, setDoc, deleteDoc } from "firebase/firestore"; 
+import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import { FIREBASE_AUTH } from '../../../src/firebase/config'
+import GetDistance from './GetDistance'
+import openUrl from 'react-native-open-url';
+
 
 export default function PlaceItem({ place, isFav, onPress, markedFav }) {
 
   const user = FIREBASE_AUTH.currentUser
   const db = getFirestore(app);
-  const onSetFav=async(place)=>{
+  const onSetFav = async (place) => {
     // Add a new document in collection "cities"
-    await setDoc(doc(db, "ev-fav-place", (place.id).toString()), 
-   { place:place,
-    email:user?.email})
+    await setDoc(doc(db, "ev-fav-place", (place.id).toString()),
+      {
+        place: place,
+        email: user?.email
+      })
     markedFav()
   }
-  const onRemoveFav=async(placeId)=>{
+  const onRemoveFav = async (placeId) => {
     await deleteDoc(doc(db, "ev-fav-place", placeId.toString()));
     markedFav()
   }
@@ -85,15 +89,15 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
             }}>
             {place?.evChargeOptions?.connectorCount} Points
           </Text>
-          
-          {isFav?<Pressable style={{
-            marginLeft: 120, 
-            backgroundColor: Colours.BLUE, 
-            borderRadius: 5, 
+
+          {isFav ? <Pressable style={{
+            marginLeft: 120,
+            backgroundColor: Colours.BLUE,
+            borderRadius: 5,
             padding: 10,
-            paddingHorizontal: 20, 
+            paddingHorizontal: 20,
             flexDirection: 'row'
-          }} onPress={()=>onRemoveFav(place.id)}>
+          }} onPress={() => onRemoveFav(place.id)}>
             <Ionicons style={{ marginTop: 1, marginRight: 5 }} name="bookmark" size={15} color="white" />
             <Text style={{
               fontSize: 14,
@@ -101,14 +105,14 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
               textAlign: 'center',
               color: Colours.WHITE,
             }}>Saved</Text>
-          </Pressable>:<Pressable style={{
-            marginLeft: 120, 
-            backgroundColor: Colours.BLUE, 
-            borderRadius: 5, 
+          </Pressable> : <Pressable style={{
+            marginLeft: 120,
+            backgroundColor: Colours.BLUE,
+            borderRadius: 5,
             padding: 10,
-            paddingHorizontal: 25, 
+            paddingHorizontal: 25,
             flexDirection: 'row'
-          }} onPress={()=>onSetFav(place)}>
+          }} onPress={() => onSetFav(place)}>
             <Ionicons style={{ marginTop: 1, marginRight: 5 }} name="bookmark-outline" size={15} color="white" />
             <Text style={{
               fontSize: 14,
@@ -118,6 +122,8 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
             }}>Save</Text>
           </Pressable>}
         </View>
+        {/* Pressable to open Google Maps */}
+        <GetDistance place={place} />
       </View>
     </TouchableOpacity>
   );

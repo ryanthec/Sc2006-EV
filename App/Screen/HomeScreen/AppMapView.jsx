@@ -20,21 +20,21 @@ export default function AppMapView({ placeList }) {
                     latitudeDelta: 0.0422,
                     longitudeDelta: 0.0421
                 }}>
-                    {location?<Marker
-                        coordinate={{
-                            latitude:location?.latitude,
-                            longitude:location?.longitude
-                        }}
-                    >
-                     <Image source={require('./../../../assets/images/car.png')}
-                     style={{width:33.75,height:60}}
-                     />
-                    </Marker>:null}
-                    {placeList&&placeList.map((item,index)=>(
-                        <Markers key={index}
+                {location ? <Marker
+                    coordinate={{
+                        latitude: location?.latitude,
+                        longitude: location?.longitude
+                    }}
+                >
+                    <Image source={require('./../../../assets/images/car.png')}
+                        style={{ width: 33.75, height: 60 }}
+                    />
+                </Marker> : null}
+                {placeList && placeList.map((item, index) => (
+                    <Markers key={index}
                         index={index}
-                        place={item}/>))}
-                </MapView>
+                        place={item} />))}
+            </MapView>
         </View>
     )
 }
