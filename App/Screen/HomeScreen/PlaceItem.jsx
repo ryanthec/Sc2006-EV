@@ -99,10 +99,9 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     CardContainer: {
-        flexGrow: 1,
-        width: '200',
-        height: 'auto',
-        margin: 9.5,
+        width:Dimensions.get('screen').width*0.99,
+        margin:5,
+        borderRadius:10,
     },
     expandedContainer: {
         flexGrow: 1,
