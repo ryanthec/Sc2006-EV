@@ -1,14 +1,15 @@
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { getAuth, AuthCredential, reauthenticateWithCredential, EmailAuthProvider, updatePassword, EmailAuthCredential } from 'firebase/auth'
-import { FIREBASE_AUTH } from '../../../src/firebase/config';
+import { FIREBASE_AUTH, app } from '../../../src/firebase/config';
+import { getFirestore, Firestore, doc, updateDoc } from '@firebase/firestore';
 
-function ResetPassword() {
+function UpdateAccount() {
+    const [newUsername, setNewUsername] = useState(false);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [verified, setVerified] = useState(false);
 
     const auth = FIREBASE_AUTH;
 
@@ -28,7 +29,7 @@ function ResetPassword() {
             await reauthenticateWithCredential(user, credential).then((result) => {
                 Alert.alert('Success', 'Password changed successfully!');
                 updatePassword(user, newPassword);
-                console.log('password changed');
+                //console.log('password changed');
             })
                 .catch((error) => {
                     return alert('wrong password');
@@ -71,6 +72,19 @@ function ResetPassword() {
         return true;
     }
 
+    const handleChangeUsername = async () => {
+        console.log('entered function');
+        setLoading(true);
+        const user = getAuth().currentUser;
+        const db = getFirestore(app);
+        const docRef = doc(db, "username", user.email)
+        console.log(docRef);
+        console.log(user.email);
+        console.log(newUsername);
+        const data = { username: newUsername.toString() };
+        await updateDoc(docRef, data);
+    }
+
     // displays alert depending on the type of password error
     const showAlert = (type) => {
         switch (type) {
@@ -103,6 +117,8 @@ function ResetPassword() {
 
     return (
         <View>
+            <TextInput value={newUsername} onChangeText={(text) => setNewUsername(text)}
+                placeholder="User" />
             <TextInput value={currentPassword} onChangeText={(password) => setCurrentPassword(password)}
                 placeholder="Current Password" secureTextEntry={true} />
             <TextInput value={newPassword} onChangeText={(password) => setNewPassword(password)}
@@ -112,9 +128,12 @@ function ResetPassword() {
             <TouchableOpacity title="Change Password" onPress={handleChangePassword}>
                 <Text> Change Password </Text>
             </TouchableOpacity>
+            <TouchableOpacity title="Change Username" onPress={handleChangeUsername}>
+                <Text> Change Username </Text>
+            </TouchableOpacity>
         </View>
     );
 }
 
 
-export default ResetPassword;
+export default UpdateAccount;

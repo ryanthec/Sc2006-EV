@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { ImageBackground } from 'react-native'
-import ResetPassword from './ResetPassword'
+import UpdateAccount from './UpdateAccount'
 
 export default function FavouriteScreen() {
   return (
@@ -14,7 +14,7 @@ export default function FavouriteScreen() {
         }}
       >
         <Text>Profile Placeholder</Text>
-        <ResetPassword />
+        <UpdateAccount />
       </ImageBackground>
     </View>
   )

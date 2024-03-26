@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react'
 import Colours from './../../Utils/Colours'
 import ImageOverlay from 'react-native-image-overlay'
 import AppMapView from '../HomeScreen/AppMapView'
-import { FIREBASE_AUTH } from '../../../src/firebase/config'
+import { FIREBASE_AUTH, app } from '../../../src/firebase/config'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
+import { getFirestore, doc, setDoc, deleteDoc } from 'firebase/firestore'
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
@@ -97,6 +98,7 @@ export default function LoginScreen() {
 
     const signUp = async (email, password) => {
         setLoading(true);
+        const db = getFirestore(app);
         // attempts to validate email
         if (!validateEmail(email)) {
             return (Alert.alert('Invalid email', 'Please enter a valid email address'))
@@ -108,6 +110,10 @@ export default function LoginScreen() {
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
+            const user = getAuth().currentUser;
+            await setDoc(doc(db, "username", user.email), {
+                username: 'User'
+            })
             await sendEmailVerification(FIREBASE_AUTH.currentUser);
             alert('Check your emails!');
         } catch (error) {
