@@ -23,6 +23,7 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
       })
     markedFav()
   }
+  
   const onRemoveFav = async (placeId) => {
     await deleteDoc(doc(db, "ev-fav-place", placeId.toString()));
     markedFav()

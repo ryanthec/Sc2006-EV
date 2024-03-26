@@ -9,7 +9,7 @@ import Services from './Services'
 import Reviews from './Reviews'
 import { StyleSheet } from 'react-native'
 
-export default function DetailsNavigation() {
+export default function DetailsNavigation({place}) {
     const [connectors, setConnectors] = useState('');
     const [services, setServices] = useState('');
     const [reviews, setReviews] = useState('');
@@ -62,7 +62,7 @@ export default function DetailsNavigation() {
                 <Services />
             </View>}
             {reviews && <View>
-                <Reviews />
+                <Reviews place = {place}/>
             </View>}
         </View>
     )

@@ -3,10 +3,10 @@ import React from 'react'
 import Colours from '../../../Utils/Colours'
 import ReviewItem from './ReviewItem'
 
-export default function Reviews() {
+export default function Reviews({place}) {
   return (
     <View style={{height:450,backgroundColor:Colours.PRIMARY,margin:10}}>
-      <ReviewItem/>
+      <ReviewItem place = {place}/>
     </View>
   )
 }

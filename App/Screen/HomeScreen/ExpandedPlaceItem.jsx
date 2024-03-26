@@ -86,7 +86,7 @@ export default function PlaceItem({ place, onPress }) {
         </View>
 
         <View style={{ height: 500 }}>
-          <DetailsNavigation />
+          <DetailsNavigation place={place}/>
         </View>
         
       </View>
