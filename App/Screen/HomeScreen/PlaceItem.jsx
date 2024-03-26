@@ -1,112 +1,124 @@
-import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Dimensions, touchableo, Pressable } from 'react-native'
+import React from 'react'
+import { Image } from 'react-native'
 import Colours from '../../Utils/Colours'
-import GlobalApi from '../../Utils/GlobalApi';
+import { useState } from 'react'
+import { TouchableOpacity } from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
+import { getFirestore } from 'firebase/firestore'
+import { app } from '../../../src/firebase/config'
+import { doc, setDoc, deleteDoc } from "firebase/firestore"; 
+import { FIREBASE_AUTH } from '../../../src/firebase/config'
 
-export default function PlaceItem({ place }) {
-    const PLACE_PHOTO_BASE_URL = "https://places.googleapis.com/v1/";
+export default function PlaceItem({ place, isFav, onPress, markedFav }) {
 
-    return (
-        // TouchableOpacity for expansion???
-        <TouchableOpacity style={styles.CardContainer}
-            onPress={() => { }}>
-            <View
-                style={{
-                    flexGrow: 1,
-                    backgroundColor: Colours.DARK,
-                    margin: 10,
-                    borderRadius: 10,
-                    width: Dimensions.get('screen').width * 0.9,
-                    paddingBottom: 10
-                }}>
+  const user = FIREBASE_AUTH.currentUser
+  const db = getFirestore(app);
+  const onSetFav=async(place)=>{
+    // Add a new document in collection "cities"
+    await setDoc(doc(db, "ev-fav-place", (place.id).toString()), 
+   { place:place,
+    email:user?.email})
+    markedFav()
+  }
+  const onRemoveFav=async(placeId)=>{
+    await deleteDoc(doc(db, "ev-fav-place", placeId.toString()));
+    markedFav()
+  }
 
+  return (
+    <TouchableOpacity onPress={() => onPress(place)}>
+      <View
+        style={{
+          padding: 15,
+          backgroundColor: Colours.PRIMARY,
+          paddingBottom: 20,
+          margin: 19,
+          borderRadius: 10,
+          width: Dimensions.get('screen').width * 0.9,
+        }}>
 
-                {/* <Image
-                source={
-                    place && place.photos && place.photos.length > 0
-                        ? {
-                            uri: `${PLACE_PHOTO_BASE_URL}${place.photos[0]?.name}/media?key=${GlobalApi.API_KEY}&maxHeightPx=800&maxWidthPx=1200`
-                        }
-                        : require('./../../../assets/images/login-bg.png')
-                } */}
-                {/* style={{
-                width: '100%', borderRadius: 10,
-                height: 130
-            }}
-        /> */}
+        <View>
+          <Text
+            style={{
+              color: Colours.WHITE,
+              fontSize: 21,
+              fontFamily: 'Inter-Bold',
+              paddingBottom: 10,
+            }}>
+            {place.displayName?.text}
+          </Text>
+        </View>
 
-                {/* NAME */}
-                <View style={{ padding: 15 }}>
-                    <Text style={{
-                        fontSize: 20,
-                        color: Colours.WHITE,
-                        fontFamily: 'Inter-Bold',
-                        width: '60%', // Set width to 50% of the parent container
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={require('./../../../assets/images/assistant_navigation.png')}
+            style={{ width: 15, height: 15, marginRight: 5, marginTop: 1.5 }} />
+          <Text
+            style={{
+              color: Colours.WHITE,
+              fontSize: 14,
+              fontFamily: 'Inter-Regular',
+              paddingBottom: 10,
+            }}>
+            {place?.shortFormattedAddress}
+          </Text>
+        </View>
 
-                    }}>{place.displayName?.text}</Text>
-                    {/* Address */}
-                    <View style={styles.AddressContainer}>
-                        <Image source={require('./../../../assets/images/assistant_navigation.png')}
-                            style={{ width: 15, height: 15 }} />
-                        <Text style={{
-                            color: Colours.CREAM,
-                            fontFamily: 'Inter-SemiBold',
-                            marginLeft: 8,
-                        }}>{place?.formattedAddress}</Text>
-                    </View>
-                    {/* Connectors */}
-                    <View style={{
-                        marginTop: 5,
-                    }}>
-                        <View style={styles.ConnectContainer}>
-                            <Image source={require('./../../../assets/images/Lightning.png')}
-                                style={{ width: 11, height: 15 }}
-                            />
-                            <Text style={{
-                                fonFamily: 'Inter-Bold',
-                                color: Colours.CREAM,
-                                marginLeft: 10,
-                            }}>Connectors</Text>
-                        </View>
-                        <Text style={{
-                            fontFamily: 'Inter-SemiBold',
-                            fontSize: 20,
-                            marginTop: 2,
-                            marginLeft: 22,
-                            color: Colours.CREAM
-                        }}>{place?.evChargeOptions?.connectorCount} Points</Text>
-                    </View>
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={require('./../../../assets/images/lightning.png')}
+            style={{ width: 11, height: 15, marginRight: 7, marginTop: 3 }} />
+          <Text style={{
+            color: Colours.WHITE,
+            fontSize: 14,
+            fontFamily: 'Inter-Regular',
+            paddingBottom: 2,
+          }}>Connectors</Text>
 
-                    {/* Thinking of how to make the bottom part expand using the TouchableOpacity */}
-                    <View style={styles.expandedContainer}>
-                        <Text style={{ color: Colours.WHITE, fontFamily: 'Inter-SemiBold', fontSize: 20 }}>
-                            Connector type
-                        </Text>
-                        <Image source={require('./../../../assets/images/white-line.png')}
-                            style={{ width: 350, height: 15, alignSelf: 'center' }} />
-                    </View>
-                </View>
-            </View>
-        </TouchableOpacity>
-    )
+        </View>
+
+        <View style={{ paddingLeft: 18, flexDirection: 'row' }}>
+          <Text
+            style={{
+              color: Colours.WHITE,
+              fontSize: 21,
+              fontFamily: 'Inter-Bold',
+            }}>
+            {place?.evChargeOptions?.connectorCount} Points
+          </Text>
+          
+          {isFav?<Pressable style={{
+            marginLeft: 120, 
+            backgroundColor: Colours.BLUE, 
+            borderRadius: 5, 
+            padding: 10,
+            paddingHorizontal: 20, 
+            flexDirection: 'row'
+          }} onPress={()=>onRemoveFav(place.id)}>
+            <Ionicons style={{ marginTop: 1, marginRight: 5 }} name="bookmark" size={15} color="white" />
+            <Text style={{
+              fontSize: 14,
+              fontFamily: 'Inter-Bold',
+              textAlign: 'center',
+              color: Colours.WHITE,
+            }}>Saved</Text>
+          </Pressable>:<Pressable style={{
+            marginLeft: 120, 
+            backgroundColor: Colours.BLUE, 
+            borderRadius: 5, 
+            padding: 10,
+            paddingHorizontal: 25, 
+            flexDirection: 'row'
+          }} onPress={()=>onSetFav(place)}>
+            <Ionicons style={{ marginTop: 1, marginRight: 5 }} name="bookmark-outline" size={15} color="white" />
+            <Text style={{
+              fontSize: 14,
+              fontFamily: 'Inter-Bold',
+              textAlign: 'center',
+              color: Colours.WHITE,
+            }}>Save</Text>
+          </Pressable>}
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 }
-
-const styles = StyleSheet.create({
-    ConnectContainer: {
-        flexDirection: 'row', // Horizontal alignment
-    },
-    AddressContainer: {
-        flexDirection: 'row', // Horizontal alignment
-        marginTop: 10
-    },
-    CardContainer: {
-        width:Dimensions.get('screen').width*0.90,
-        margin:5,
-        borderRadius:10,
-        
-    },
-    expandedContainer: {
-        flexGrow: 1,
-        marginTop: 10,
-
-    }
-});
