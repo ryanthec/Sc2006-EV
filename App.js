@@ -13,12 +13,17 @@ import HomeScreen from './App/Screen/HomeScreen/HomeScreen';
 import * as Location from 'expo-location';
 import { UserLocationContext } from './App/Context/UserLocationContext';
 import { createContext } from 'react';
+import { LogBox } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   const [user, setUser] = useState(null);
   const [isVerified, setVerified] = useState(false);
+  //ignore Yellow Log Notifications 
+  LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  LogBox.ignoreAllLogs();//Ignore all log notifications
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
