@@ -86,7 +86,7 @@ export default function PlaceListView({ placeList }) {
                     </View>
                 )}
             />)}
-            {expanded && <View><ExpandedPlaceItem place={selectedPlace} onPress={handlePlacePress} /></View>}
+            {expanded && <View><ExpandedPlaceItem place={selectedPlace} isFav={isFav(selectedPlace)} markedFav={()=>getFav()} onPress={handlePlacePress} /></View>}
         </View>
     );
 }

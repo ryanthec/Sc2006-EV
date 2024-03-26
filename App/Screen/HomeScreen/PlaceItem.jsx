@@ -114,7 +114,7 @@ export default function PlaceItem({ place, isFav, onPress, markedFav }) {
       </View>
     </TouchableOpacity>
 
-    <View styles={{}}>
+    <View>
     {isFav ? <Pressable style={styles.bookmark} onPress={() => onRemoveFav(place.id)}>
       <Image source={require('./../../../assets/images/bookmarked.png')}
         style={{ width: 40, height: 40 }} />
